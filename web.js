@@ -4,6 +4,21 @@ var my_http = require("http");
 var url = require("url");
 var mime = require('mime');
 
+var SerialPort = require("serialport").SerialPort;
+var sp = new SerialPort("/dev/ttyAMA0", { baudrate: 115200 });
+
+sp.on("open", function () {
+        console.log('serial port open.');
+//        sp.on('data', function(data) {
+//            console.log('data received: ' + data);
+//            });
+
+//        sp.write("abcdefgiy\n", function(err, results) {
+ //           console.log('err ' + err);
+//            console.log('results ' + results);
+//            });
+        });
+
 my_http.createServer(function (request, response) {
     var path = url.parse(request.url).pathname;
 
@@ -28,3 +43,11 @@ my_http.createServer(function (request, response) {
 
 console.log("Server Running on 8080");
 
+
+function updateClick ()
+{
+        sp.write("abcdefgiy\n", function(err, results) {
+                if (err) console.log('err ' + err);
+            });
+ 
+}

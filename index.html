@@ -12,6 +12,19 @@
     <body>
         <canvas id="myProcessing" data-processing-sources="Canvas2D.pde"></canvas>
 
+        <script type="application/javascript">
+            var p = Processing.getInstanceById('myProcessing');
+            console.log(p);
+            var clickedJS = p.getClicked();
+            var updateClicked = function () {
+                document.getElementById('msg').innerHTML = 'Message: ' + clickedJS;
+                console.log(clickedJS);
+            };
+
+        </script>
+
+        <div id='msg'></div>
+
    </body>
 
 

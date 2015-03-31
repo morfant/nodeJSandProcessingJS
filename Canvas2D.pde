@@ -91,6 +91,7 @@ void mousePressed() {
     getCoord();
     pressed = true;
     println("X: " + (curXcor + 1) + " / Y: " + (curYcor + 1) + " " + clicked[curXcor][curYcor]);                      
+    updateClicked();
   }
 }
 
