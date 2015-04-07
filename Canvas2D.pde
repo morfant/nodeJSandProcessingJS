@@ -6,8 +6,8 @@
 int wrec = 11;
 int hrec = 7;
 float rwidth, rheight;
-int curXcor = 0;
-int curYcor = 0;
+int cx = 0;
+int cy = 0;
 boolean pressed = false;
 boolean[][] clicked;
 
@@ -15,6 +15,7 @@ boolean[][] clicked;
 var updateClicked = function () {
 //    document.getElementById('msg').innerHTML = 'Message: ' + clickedJS;
     console.log("updateClicked!");
+//    console.log("x: " + cx + " y: " + cy + " val: " + clicked[cx][cy]);
     sendMsg();
 
 };
@@ -22,6 +23,7 @@ var updateClicked = function () {
 var sendMsg = function () {
     console.log('sendMsg()');
     var xmlhttp;
+    var urldata;
     if (window.XMLHttpRequest) {
         xmlhttp = new XMLHttpRequest();
     }
@@ -29,7 +31,10 @@ var sendMsg = function () {
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
 
-    xmlhttp.open("GET", "http://192.168.0.100:8080/getstring", true);
+    var btoi = clicked[cx][cy] ? 1 : 0;
+    urldata = "/coorval"+"?"+"x="+cx+"&"+"y="+cy+"&"+"press="+btoi; 
+//    urldata = "/coorval";  
+    xmlhttp.open("GET", urldata, true); //to web server
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
             document.getElementById("msg").innerHTML = xmlhttp.responseText;
@@ -100,8 +105,8 @@ void getCoord()
       for (int j = 0; j < hrec; j++){
         if (i*rwidth < mouseX && mouseX < (i+1)*rwidth) {
           if (j*rheight < mouseY && mouseY < (j+1)*rheight) {
-            curXcor = i;
-            curYcor = j;
+            cx = i;
+            cy = j;
 //            if (clicked[i][j] == true) clicked[i][j] = false;
 //            if (clicked[i][j] == false) clicked[i][j] = true;
             clicked[i][j] = !(clicked[i][j]);
@@ -120,7 +125,7 @@ void mousePressed() {
   if (!pressed){
     getCoord();
     pressed = true;
-    println("X: " + (curXcor + 1) + " / Y: " + (curYcor + 1) + " " + clicked[curXcor][curYcor]);                      
+    println("X: " + (cx + 1) + " / Y: " + (cy + 1) + " " + clicked[cx][cy]);                      
     updateClicked();
   }
 }

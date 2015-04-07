@@ -1,29 +1,15 @@
+var PORT = "/dev/ttyAMA0";
 var sys = require("sys");
 var fs = require('fs');
 var my_http = require("http");
 var url = require("url");
 var mime = require('mime');
 var SerialPort = require("serialport").SerialPort;
-var sp = new SerialPort("/dev/ttyAMA0", { baudrate: 115200 });
+var sp = new SerialPort(PORT, { baudrate: 115200 });
 
 var serialOpen = function() {
     sp.on("open", function () {
-        console.log('serial port open.');
-//        sp.on('data', function(data) {
-//            console.log('data received: ' + data);
-//            });
-
-//        sp.write("abcdefgiy\n", function(err, results) {
- //           console.log('err ' + err);
-//            console.log('results ' + results);
-//            });
-        });
-};
-
-var serialSend = function(data) {
-    console.log('run serialSend');
-    sp.write(data, function(err, results) {
-            if (err) console.log('err ' + err);
+        console.log("serial port " + PORT + " open.");
         });
 };
 
@@ -34,10 +20,16 @@ my_http.createServer(function (request, response) {
 
     if (path == '/') {
         filepath = './index.html';
-    } else if (path == '/getstring') {
-        console.log('in /getstring');
-        sendTest();
+    } else if (path == '/coorval') {
+        var data = url.parse(request.url, true).query;
+        var buf = new Buffer([Number(data.x) + Number(48), Number(data.y) + Number(48), Number(data.press) + Number(48)]);
+//        console.log(data);
+//        console.log(buf);
+       
+        serialSend(buf);
+        
         filepath = 'function';
+
     } else {
         filepath = "." + path;
     }
@@ -60,10 +52,10 @@ my_http.createServer(function (request, response) {
 console.log("Server Running on 8080");
 
 
-function sendTest()
+function serialSend(data)
 {
-    console.log('in sendTest()');
-    sp.write("testdone\n", function(err, results) {
+ //   console.log('in sendTest()');
+    sp.write(data, function(err, results) {
             if (err) console.log('err ' + err);
         });
 }
