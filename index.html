@@ -4,24 +4,31 @@
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
         <title>Anaflos matrix</title>
 
-        <script type="text/javascript" src="processing.min.js"></script>
+        <script src="processing.js"></script>
 
 
     </head>
 
-    <body>
+    <body> 
         <canvas id="myProcessing" data-processing-sources="Canvas2D.pde"></canvas>
 
-        <script type="application/javascript">
-            var p = Processing.getInstanceById('myProcessing');
-            console.log(p);
-            var clickedJS = p.getClicked();
-            var updateClicked = function () {
-                document.getElementById('msg').innerHTML = 'Message: ' + clickedJS;
-                console.log(clickedJS);
-            };
+        <button onclick="getProcessing()">getProcessing</button> 
+<!--        <button onclick="testfunc()">TEST</button> -->
 
-        </script>
+        <script type="application/javascript">
+
+            var p;
+            var clickedJS;
+            function getProcessing() {
+                if (!p) {
+                    p = Processing.getInstanceById('myProcessing');
+                }
+            clickedJS = p.getClicked();
+            console.log(clickedJS);
+//            serialSend('abc\n');
+            };
+            
+       </script>
 
         <div id='msg'></div>
 

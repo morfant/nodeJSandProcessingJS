@@ -11,6 +11,36 @@ int curYcor = 0;
 boolean pressed = false;
 boolean[][] clicked;
 
+/* JS script */
+var updateClicked = function () {
+//    document.getElementById('msg').innerHTML = 'Message: ' + clickedJS;
+    console.log("updateClicked!");
+    sendMsg();
+
+};
+
+var sendMsg = function () {
+    console.log('sendMsg()');
+    var xmlhttp;
+    if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    }
+    else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    xmlhttp.open("GET", "http://192.168.0.100:8080/getstring", true);
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            document.getElementById("msg").innerHTML = xmlhttp.responseText;
+        }else if ( xmlhttp.readyState == 4 && xmlhttp.status == 500) {
+            document.getElementById("msg").innerHTML = xmlhttp.responseText;
+        }
+    };
+    xmlhttp.send();
+};
+
+
 void setup() {
   size(640, 640);
   rwidth = width / wrec;
